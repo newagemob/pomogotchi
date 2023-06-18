@@ -6,6 +6,7 @@ total_work_time=0
 total_break_time=0
 work_sessions=0
 breaks=0
+working=false
 
 # formatted countdown timer
 display_timer() {
@@ -19,10 +20,13 @@ display_timer() {
     timer_minutes=$(printf "%02d" $(($timer / 60)))
     timer_seconds=$(printf "%02d" $(($timer % 60)))
 
-    # Display the formatted time countdown and statistics - don't print a newline, rewrite the current line
-    printf "total time: %02d:%02d | work sessions: %d | breaks: %d | work time: %02d:%02d | break time: %02d:%02d\n\r" $(($total_time / 60)) $(($total_time % 60)) $work_sessions $breaks $(($total_work_time / 60)) $(($total_work_time % 60)) $(($total_break_time / 60)) $(($total_break_time % 60))
-
-    echo -ne "\t pomogotchi 🟢 : $timer_minutes:$timer_seconds / $(($max / 60)):$((max % 60))"
+    # Display the formatted time countdown
+    if [ "$working" = false ]; then
+        echo -ne "\t break 🔴 : $timer_minutes:$timer_seconds / $(($max / 60)):$((max % 60)) \t session: $work_sessions, breaks: $breaks ⏰: $total_time \r"
+    fi
+    if [ "$working" = true ]; then
+        echo -ne "\t work 🔵 : $timer_minutes:$timer_seconds / $(($max / 60)):$((max % 60)) \t session: $work_sessions, work: $total_work_time ⏰: $total_time \r"
+    fi
 }
 
 play_start_notification() {
@@ -87,6 +91,7 @@ start_pomodoro() {
         ((work_sessions++))
         play_start_notification
         # Work time
+        working=true
         timer_start=$(date +%s)
         timer_end=$((timer_start + work_time))
         display_timer "$work_time" "$work_time"
@@ -100,6 +105,7 @@ start_pomodoro() {
         play_stop_notification
         ((breaks++))
         # Break time
+        working=false
         timer_start=$(date +%s)
         timer_end=$((timer_start + break_time))
         display_timer "$break_time" "$break_time"
