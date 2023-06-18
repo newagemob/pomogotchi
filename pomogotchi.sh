@@ -22,7 +22,7 @@ display_timer() {
 
     # Display the formatted time countdown
     if [ "$working" = false ]; then
-        echo -ne "\t break 🔴 : $timer_minutes:$timer_seconds / $(($max / 60)):$((max % 60)) \t session: $work_sessions, breaks: $breaks ⏰: $total_time \r"
+        echo -ne "\t break 🟢 : $timer_minutes:$timer_seconds / $(($max / 60)):$((max % 60)) \t session: $work_sessions, breaks: $breaks ⏰: $total_time \r"
     fi
     if [ "$working" = true ]; then
         echo -ne "\t work 🔵 : $timer_minutes:$timer_seconds / $(($max / 60)):$((max % 60)) \t session: $work_sessions, work: $total_work_time ⏰: $total_time \r"
@@ -120,7 +120,8 @@ start_pomodoro() {
 }
 
 # Main script
-work_duration=10  # Pomodoro work time in seconds (default: 25 minutes)
-break_duration=10 # Break time in seconds (default: 5 minutes)
+
+work_duration=25*60 # Pomodoro work time in seconds (default: 25 minutes)
+break_duration=5*60 # Break time in seconds (default: 5 minutes)
 
 start_pomodoro "$work_duration" "$break_duration"
