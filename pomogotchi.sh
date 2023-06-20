@@ -22,7 +22,7 @@ display_timer() {
 
     # Display the formatted time countdown
     if [ "$working" = false ]; then
-        echo -ne "\t break 🟢 : $timer_minutes:$timer_seconds / $(($max / 60)):$((max % 60)) \t session: $work_sessions, breaks: $breaks ⏰: $total_time \r"
+        echo -ne "\t break 🟢 : $timer_minutes:$timer_seconds / $(($max / 60)):$((max % 60)) \t session: $work_sessions, breaks: $total_break_time ⏰: $total_time \r"
     fi
     if [ "$working" = true ]; then
         echo -ne "\t work 🔵 : $timer_minutes:$timer_seconds / $(($max / 60)):$((max % 60)) \t session: $work_sessions, work: $total_work_time ⏰: $total_time \r"
